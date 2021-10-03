@@ -1,0 +1,189 @@
+﻿@model AssignmentAdminEmployees.Application.ViewModul.EmployeeVM
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-action="Create">
+    <div class="card card-custom">
+        <div class="card-header card-header-tabs-line">
+            <div class="card-title">
+                <h3 class="card-label">@localizer["create"]</h3>
+            </div>
+            <div class="card-toolbar">
+                <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1_2">@localizer["name"]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2_2">@localizer["contact"]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_3_2">@localizer["statusanddepartement"]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_4_2">@localizer["worktime"]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_5_2">@localizer["information"]</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="kt_tab_pane_1_2" role="tabpanel">
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label>@localizer["nameenglish"]:</label>
+                            <input type="text" class="form-control" asp-for="EMPLOYEE_NAME_LANG1" />
+                            <span class="form-text text-muted">Please enter name english</span>
+                            <span asp-validation-for="EMPLOYEE_NAME_LANG1" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>@localizer["namearabic"]:</label>
+                            <input type="text" class="form-control" asp-for="EMPLOYEE_NAME_LANG2" />
+                            <span class="form-text text-muted">Please enter name arabic</span>
+                            <span asp-validation-for="EMPLOYEE_NAME_LANG2" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <button type="submit" class="btn btn-primary mr-2">@localizer["save"]</button>
+                                <a href="/Employee/Index" class="btn btn-secondary">@localizer["cancel"]</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="kt_tab_pane_2_2" role="tabpanel">
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label>@localizer["email"]:</label>
+                            <input type="email" class="form-control" asp-for="EMAIL_ADDRERSS" />
+                            <span class="form-text text-muted">Please enter Email</span>
+                            <span asp-validation-for="EMAIL_ADDRERSS" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>@localizer["mobile"]:</label>
+                            <input type="number" asp-for="MOBILE" class="form-control" />
+                            <span class="form-text text-muted">Please enter Mobile</span>
+                            <span asp-validation-for="MOBILE" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <button type="submit" class="btn btn-primary mr-2">@localizer["save"]</button>
+                                <a href="/Employee/Index" class="btn btn-secondary">@localizer["cancel"]</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="kt_tab_pane_3_2" role="tabpanel">
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+
+                            <label>@localizer["status"]:</label>
+                            <select class="form-control UserDropdown" asp-for="EMPLOYEE_STATUS_ID" asp-items="ViewBag.GetStatus">
+                                <option>--select--</option>
+                            </select>
+                            <span class="form-text text-muted">Please select Status</span>
+
+
+                        </div>
+                        <div class="col-lg-6">
+
+                            <label>@localizer["departement"]:</label>
+                            <select class="form-control UserDropdown" asp-for="EMPLOYEE_DEPARTMENT_ID" asp-items="ViewBag.GetDepartment">
+                                <option>--select--</option>
+
+                            </select>
+                            <span class="form-text text-muted">Please select Department</span>
+
+
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <button type="submit" class="btn btn-primary mr-2">@localizer["save"]</button>
+                                <a href="/Employee/Index" class="btn btn-secondary">@localizer["cancel"]</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="kt_tab_pane_4_2" role="tabpanel">
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label>@localizer["workhourfrom"]:</label>
+                            <input type="time" class="form-control" asp-for="WORKING_HOUR_FROM" placeholder="" />
+                            <span class="form-text text-muted">Please enter work hour from</span>
+                            <span asp-validation-for="WORKING_HOUR_FROM" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>@localizer["workhourto"]:</label>
+                            <input type="time" class="form-control" asp-for="WORKING_HOUR_TO" placeholder="" />
+                            <span class="form-text text-muted">Please enter work hour to</span>
+                            <span asp-validation-for="WORKING_HOUR_TO" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <button type="submit" class="btn btn-primary mr-2">@localizer["save"]</button>
+                                <a href="/Employee/Index" class="btn btn-secondary">@localizer["cancel"]</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="kt_tab_pane_5_2" role="tabpanel">
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label>@localizer["age"]:</label>
+                            <input type="number" class="form-control" asp-for="AGE" placeholder="" />
+                            <span class="form-text text-muted">Please enter work hour from</span>
+                            <span asp-validation-for="AGE" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>@localizer["salary"]:</label>
+                            <input type="number" class="form-control" asp-for="SALARY" placeholder="" />
+                            <span class="form-text text-muted">Please enter work hour to</span>
+                            <span asp-validation-for="SALARY" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-6">
+
+                            <label>@localizer["gender"]:</label>
+                            <select class="form-control UserDropdown" asp-for="GENDER_ID" asp-items="ViewBag.GetGender">
+                                <option>--select--</option>
+
+                            </select>
+                            <span class="form-text text-muted">Please select Department</span>
+
+
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <button type="submit" class="btn btn-primary mr-2">@localizer["save"]</button>
+                                <a href="/Employee/Index" class="btn btn-secondary">@localizer["cancel"]</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

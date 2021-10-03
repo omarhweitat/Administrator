@@ -1,0 +1,251 @@
+﻿@model AssignmentAdminEmployees.Application.ViewModul.EmployeeVM
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+@{
+    ViewData["Title"] = "Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    ViewData["Title"] = "Employee Table";
+}
+
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <h5 class="text-dark font-weight-bold my-1 mr-5">@localizer["employeetable"]</h5>
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item text-muted">
+                        <a href="" class="text-muted"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="d-flex align-items-center">
+            <form method="post" asp-controller="Report" asp-action="ExportEmployeeActive">
+                        <input class="max-h-30px" type="image" src="~/assets/media/logos/excel.png" onsubmit="ExportEmployeeActive();" />
+               </form>
+            <div class="ml-2">
+                <a asp-controller="Employee" asp-action="Create" class="btn btn-primary font-weight-bold JsSubmit">@localizer["AddNewEmployee"]</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex flex-column-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-custom card-collapse" data-card="true">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span class="card-icon">
+                                <i class="flaticon2-chat-1 text-primary"></i>
+                            </span>
+                            <h3 class="card-label">@localizer["search"]</h3>
+                        </div>
+                        <div class="card-toolbar">
+                            <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary mr-1" data-card-tool="toggle" data-toggle="tooltip" data-placement="top" title="Toggle Card">
+                                <i class="ki ki-arrow-down icon-nm"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: none; overflow: hidden; padding-top: 0px; padding-bottom: 0px;">
+
+                        <div class="row">
+
+                            <div class="col-3">
+                                <label> @localizer["name"] </label>
+                                <input type="text" id="Name" class="form-control JsSearchEnter" asp-for="EMPLOYEE_NAME_LANG1">
+                            </div>
+                            <div class="col-3">
+                                <label> @localizer["email"]</label>
+                                <input type="text" id="Email" class="form-control JsSearchEnter" asp-for="EMAIL_ADDRERSS">
+                            </div>
+                            <div class="col-3">
+                                <label> @localizer["mobile"] </label>
+                                <input type="text" id="Mobile" class="form-control JsSearchEnter" asp-for="MOBILE">
+                            </div>
+
+
+                           
+
+
+
+                        </div>
+
+
+                        <div class="card-footer text-lg-right">
+
+                            <a ID="btnSearch" OnClick="Search()" class="btn btn-primary mr-2">Search</a>
+                            <a onclick="ClearSearch()" class="btn btn-secondary">Clear</a>
+
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <!--end::Card-->
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span class="card-icon">
+                                <i class="fa fa-cogs font-green-sharp"></i>
+                            </span>
+                            <h3 class="card-label">@localizer["inquiry"]</h3>
+
+
+                        </div>
+                        <div class="card-toolbar">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table id="Employee" class="table table-sm table-bordered table-striped ">
+                            <thead>
+                                <tr>
+
+                                    <th>
+                                        @localizer["name"]
+                                    </th>
+                                    <th>
+                                        @localizer["email"]
+                                    </th>
+                                    <th>
+                                        @localizer["mobile"]
+                                    </th>
+                                    <th>
+                                        @localizer["status"]
+                                    </th>
+                                    <th>
+                                        @localizer["gender"]
+                                    </th>
+                                    <th>
+                                        @localizer["salary"]
+                                    </th>
+                                    <th>@localizer["edite"]</th>
+                                    <th>@localizer["delete"]</th>
+                                    <th>@localizer["details"]</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    
+</div>
+
+@section Script{
+    <script>
+        var datatable = {
+            table: null,
+            initializeDataTable: function () {
+                var $tablea = $('#Employee')
+                datatable.table = $tablea.DataTable({
+                    processing: true,
+                    ordering: true,
+                    paging: true,
+                    bFilter: true,
+                    responsive: true,
+                    searchDelay: 500,
+                    searching: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "../api/EmployeeApi",
+                        type: "POST",
+                        datatype: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        data: function (data) {
+                            data.columns[1]["search"].value = document.getElementById('Name').value;
+                            data.columns[2]["search"].value = document.getElementById('Email').value;
+                            data.columns[3]["search"].value = document.getElementById('Mobile').value;
+                            return JSON.stringify(data); // return JSON string
+                        }
+                    },
+                    columns: [
+
+                        { "data": "name", target: 1 },
+                        { "data": "email", target: 2 },
+                        { "data": "modile", target: 3 },
+                        { "data": "status", target: 4 },
+                        { "data": "gender", target: 5 },
+                        { "data": "salary", target: 6 },
+                        {
+                            "data": "id", "width": "40px", "render": function (data) {
+                                return '<a  class="btn btn-secondary" href="/Employee/Edite/' + data + '"><i class="icon-xl fas fa-edit"></i></a>'
+                            }
+                        },
+
+                        {
+                            "data": "id", "width": "40px", "render": function (data) {
+                                return '<a  class="btn btn-secondary" href="/Employee/Delete/' + data + '"><i class="icon-xl far fa-trash-alt"></i></a>'
+                            }
+                        },
+
+                        {
+                            "data": "id", "width": "40px", "render": function (data) {
+                                return '<a  class="btn btn-secondary" href="/Employee/Details/' + data + '"><i class="icon-2x text-dark-50 flaticon2-file"></i></a>'
+                            }
+                        }
+
+                    ],
+                });
+            },
+            getData: function () {
+                if (datatable.table == null) {
+                    datatable.initializeDataTable();
+
+                }
+                else {
+                    datatable.table.ajax.reload();
+                }
+            }
+
+        };
+        $(document).ready(function () {
+
+
+
+
+            $('.JsSearchEnter').keypress(function (e) {
+                var key = e.which;
+                if (key == 13) // the enter key code
+                {
+                    $('#btnSearch').click();
+                    //return false;
+                }
+            });
+
+            datatable.getData();
+
+
+
+        });
+
+        function Search() {
+            datatable.getData();
+        }
+
+        function ClearSearch() {
+
+            document.getElementById('Name').value = "";
+            document.getElementById('Email').value = "";
+            document.getElementById('Mobile').value = "";
+
+
+        }
+    </script>
+}

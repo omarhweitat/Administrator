@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewData["Title"] = "Statistical_Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/js/exporting.js"></script>
+<script src="~/js/highcharts.js"></script>
+<div class="col-lg-12">
+    <div class="card card-custom gutter-b">
+        <div class="card-header">
+            <div class="card-title">
+                <h3 class="card-label">Statisitical Report</h3>
+            </div>
+        </div>
+        <div class="card-body">
+                <div class="jumbotron">
+                    <div id="container" style="min-width:310px; height : 400px;max-width:600px;margin:0 auto">
+                    </div>
+
+                </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+    <script>
+
+        $(document).ready(function () {
+            $.ajax({
+                url: '../Api/EmployeeApi/GetData',
+                type: "POST",
+                datatype: "json",
+                contentType: 'application/json; charset=utf-8',
+                data: function (data) {
+                    debugger;
+                    return JSON.stringify(data); // return JSON string
+                },
+            }).done(function (data) {
+                debugger;
+                Highcharts.chart('container', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Statistical Report for Employee’s Gender'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    accessibility: {
+                        point: {
+                            valueSuffix: '%'
+                        }
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        colorByPoint: true,
+                        data: [{
+                            name: 'Male',
+                            y: data.male
+                        }, {
+                            name: 'Female',
+                            y: data.female
+                        }]
+                    }],
+                });
+            });
+
+        });
+
+
+
+
+
+    </script>
+   
+
+
+
+
+    
+}
